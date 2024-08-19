@@ -1,0 +1,32 @@
+{
+  "name": "frontend-monitor-wx-mini-program-performance",
+  "version": "0.0.2",
+  "description": "masterye--前端稳定性监控 小程序性能监控",
+  "main": "dist/index.global.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "unpkg": "dist/index.global.js",
+  "scripts": {
+    "build": "frontend-bundle src/index.ts --format iife,cjs,esm --dts --minify --global-name frontendMonitor",
+    "clean": "rimraf dist node_modules"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "frontend",
+    "monitor",
+    "mini",
+    "performance"
+  ],
+  "author": "chenghuai",
+  "license": "ISC",
+  "devDependencies": {
+    "frontend-bundle": "^1.4.1"
+  },
+  "dependencies": {
+    "frontend-monitor-utils": "workspace:^",
+    "frontend-monitor-shared": "workspace:^",
+    "frontend-monitor-types": "workspace:^"
+  }
+}

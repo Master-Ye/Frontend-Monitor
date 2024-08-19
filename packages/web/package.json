@@ -1,0 +1,31 @@
+{
+  "name": "frontend-monitor-web",
+  "version": "0.0.2",
+  "description": "masterye--前端稳定性监控 Web 监控",
+  "main": "dist/index.global.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "unpkg": "dist/index.global.js",
+  "scripts": {
+    "build": "frontend-bundle src/index.ts --format iife,cjs,esm --dts --minify --global-name frontendMonitor",
+    "clean": "rimraf dist node_modules"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "frontend",
+    "monitor",
+    "web"
+  ],
+  "author": "chenghuai",
+  "license": "ISC",
+  "devDependencies": {
+    "frontend-bundle": "^1.4.1"
+  },
+  "dependencies": {
+    "frontend-monitor-browser": "workspace:^",
+    "frontend-monitor-react": "workspace:^",
+    "frontend-monitor-vue": "workspace:^"
+  }
+}
