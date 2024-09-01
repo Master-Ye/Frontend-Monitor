@@ -20,13 +20,13 @@ import { initFCP } from './metrics/getFCP';
 import { initFID } from './metrics/getFID';
 import { initLCP } from './metrics/getLCP';
 import { initFPS } from './metrics/getFPS';
-import { inititCLS } from './metrics/getCLS';
+import { initCLS } from './metrics/getCLS';
 import { initCCP } from './metrics/getCCP';
 
 let metricsStore: MetricsStore;
 let reporter: ReturnType<typeof createReporter>;
 
-class WebVals implements IWebVitals {
+class WebVitals implements IWebVitals {
   immediately: boolean;
 
   constructor(config: IConfig) {
