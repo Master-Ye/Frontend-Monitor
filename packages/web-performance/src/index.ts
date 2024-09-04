@@ -50,7 +50,31 @@ class WebVitals implements IWebVitals {
     window.__monitor_sessionId__ = sessionId;
     reporter = createReporter(sessionId, appId, version, reportCallback);
     metricsStore = new MetricsStore();
+    // on(_global, 'load', function () {
+    //   // 上报资源列表
+    //   transportData.send({
+    //     type: EVENTTYPES.PERFORMANCE,
+    //     name: 'resourceList',
+    //     time: getTimestamp(),
+    //     status: STATUS_CODE.OK,
+    //     resourceList: getResource(),
+    //   });
 
+    //   // 上报内存情况, safari、firefox不支持该属性
+    //   if (performance.memory) {
+    //     transportData.send({
+    //       type: EVENTTYPES.PERFORMANCE,
+    //       name: 'memory',
+    //       time: getTimestamp(),
+    //       status: STATUS_CODE.OK,
+    //       memory: {
+    //         jsHeapSizeLimit: performance.memory && performance.memory.jsHeapSizeLimit,
+    //         totalJSHeapSize: performance.memory && performance.memory.totalJSHeapSize,
+    //         usedJSHeapSize: performance.memory && performance.memory.usedJSHeapSize,
+    //       },
+    //     });
+    //   }
+    // });
     initPageInfo(metricsStore, reporter, immediately);
     initNetworkInfo(metricsStore, reporter, immediately);
     initDeviceInfo(metricsStore, reporter, immediately);
