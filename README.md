@@ -16,9 +16,9 @@
 2. 存储&整理错误：服务端对错误信息做过滤整合，存表落库；
 3. 数据看板：通过可视化看板渲染错误信息，方便定位问题及告警；
 
-## 管理架构：
+## 文件管理架构：
 
-pnpm monorepo
+pnpm+monorepo
 
 ```Markdown
 ├── README.md
@@ -60,7 +60,7 @@ pnpm monorepo
 │   │   ├── README.md
 │   │   ├── package.json
 │   │   └── src
-│   ├── wx-miniprogram
+│   ├── wx-miniprogram(小程序)
 │   │   ├── README.md
 │   │   ├── package.json
 │   │   └── src
@@ -99,5 +99,8 @@ pnpm monorepo
 
 
 
-TODO:`Node`层作为数据清洗层，进行的常见的数据清洗规则及使用 使用`Node+mysql+redis`进行持久化的数据存储，及稳定性指标的展示+告警系统
+TODO:
+1. `Node`层作为数据清洗层，进行的常见的数据清洗规则及使用 使用`Node+mysql+redis`进行持久化的数据存储，及稳定性指标的展示+告警系统
+2. JSON`录屏`监控报警+`sourcemap`定位源码+采样判断白屏
+3. 多端适配(RN 小程序 web)
 
