@@ -89,13 +89,13 @@ pnpm monorepo
 
 4. ### 性能指标收集
 
-​	![image-20240825185102010](imgs\image-20240825185102010.png)
+​	![image-20240825185102010](imgs/image-20240825185102010.png)
 
 > 参考：[网页核心指标性能](https://web.dev/articles/vitals?hl=zh-cn)
 
 ## 架构设计
 
-![image](imgs\image.png)
+![image](imgs/image.png)
 
 
 
