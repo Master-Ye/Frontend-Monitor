@@ -104,16 +104,30 @@ const HandleEvents = {
       stack: [element],
     };
   },
+  //路由后端可以用来做pv/uv
   handleHistory(data: Replace.IRouter): void {
     const { from, to } = data;
     const { relative: parsedFrom } = parseUrlToObj(from);
     const { relative: parsedTo } = parseUrlToObj(to);
+    let currentPagePath = JSON.parse(
+      window.sessionStorage.getItem('_t_currentPagePath') || '',
+    )
+    // 计算停留时长
+    const stayDuration = Date.now() - currentPagePath.time
+    currentPagePath = {
+      time: Date.now(),
+    }
+    window.sessionStorage.setItem(
+      '_t_currentPagePath',
+      JSON.stringify(currentPagePath),
+    )
     breadcrumb.push({
       type: BreadCrumbTypes.ROUTE,
       category: breadcrumb.getCategory(BreadCrumbTypes.ROUTE),
       data: {
         from: parsedFrom ? parsedFrom : '/',
         to: parsedTo ? parsedTo : '/',
+        time: stayDuration
       },
       level: Severity.Info,
     });
@@ -126,12 +140,25 @@ const HandleEvents = {
     const { oldURL, newURL } = data;
     const { relative: from } = parseUrlToObj(oldURL);
     const { relative: to } = parseUrlToObj(newURL);
+    let currentPagePath = JSON.parse(
+      window.sessionStorage.getItem('_t_currentPagePath') || '',
+    )
+    // 计算停留时长
+    const stayDuration = Date.now() - currentPagePath.time
+    currentPagePath = {
+      time: Date.now(),
+    }
+    window.sessionStorage.setItem(
+      '_t_currentPagePath',
+      JSON.stringify(currentPagePath),
+    )
     breadcrumb.push({
       type: BreadCrumbTypes.ROUTE,
       category: breadcrumb.getCategory(BreadCrumbTypes.ROUTE),
       data: {
         from,
         to,
+        time: stayDuration
       },
       level: Severity.Info,
     });

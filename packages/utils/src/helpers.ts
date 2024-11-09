@@ -172,6 +172,14 @@ export function silentConsoleScope(callback: Function) {
   callback();
   globalVar.isLogAddBreadcrumb = true;
 }
+export function getSessionOrCreate(sessionKey: string, newValue: string) {
+  const sessionId = window.sessionStorage.getItem(sessionKey)
+  if (sessionId) {
+    return sessionId
+  }
+  window.sessionStorage.setItem(sessionKey, newValue)
+  return newValue
+}
 
 export function generateUUID(): string {
   let d = new Date().getTime();
