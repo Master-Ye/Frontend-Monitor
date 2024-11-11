@@ -32,6 +32,9 @@ export interface ReportDataType extends ICommonDataType {
   time?: number;
   errorId?: number;
   level: string;
+  fileName?:string;
+  line?: number;
+  column?: number;
   // ajax
   elapsedTime?: number;
   request?: {

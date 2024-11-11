@@ -38,6 +38,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "rimraf": "^5.0.5"
+    "rimraf": "^5.0.5",
+    "error-stack-parser": "^2.1.4"
   }
 }

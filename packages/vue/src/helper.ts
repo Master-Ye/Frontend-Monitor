@@ -9,6 +9,7 @@ import { ErrorTypes, BreadCrumbTypes } from 'frontend-monitor-shared';
 import { ViewModel, VueInstance } from './types';
 import { breadcrumb, transportData } from 'frontend-monitor-core';
 import { ReportDataType } from 'frontend-monitor-types';
+import ErrorStackParser from 'error-stack-parser';
 
 export function handleVueError(
   err: Error,
@@ -18,36 +19,49 @@ export function handleVueError(
   breadcrumbLevel: Severity,
   Vue: VueInstance,
 ): void {
-  const version = Vue?.version;
-  let data: ReportDataType = {
-    type: ErrorTypes.VUE_ERROR,
-    message: `${err.message}(${info})`,
-    level,
-    url: getLocationHref(),
-    name: err.name,
-    stack: err.stack || [],
-    time: getTimestamp(),
-  };
-  if (variableTypeDetection.isString(version)) {
-    switch (getBigVersion(version)) {
-      case 2:
-        data = { ...data, ...vue2VmHandler(vm) };
-        break;
-      case 3:
-        data = { ...data, ...vue3VmHandler(vm) };
-        break;
-      default:
-        return;
-        break;
+  const target = err.target;
+  if (!target || (err.target && !err.target.localName)) {
+    // vue和react捕获的报错使用ev解析，异步错误使用ev.error解析
+    const stackFrame = ErrorStackParser.parse(!target ? err : err.error)[0];
+    const { fileName, columnNumber, lineNumber } = stackFrame;
+    // const hash: string = getErrorUid(
+    //   `${EVENTTYPES.ERROR}-${ev.message}-${fileName}-${columnNumber}`
+    // );
+
+    const version = Vue?.version;
+    let data: ReportDataType = {
+      type: ErrorTypes.VUE_ERROR,
+      message: `${err.message}(${info})`,
+      level,
+      url: getLocationHref(),
+      name: err.name,
+      stack: err.stack || [],
+      time: getTimestamp(),
+      fileName,
+      line: lineNumber,
+      column: columnNumber,
+    };
+    if (variableTypeDetection.isString(version)) {
+      switch (getBigVersion(version)) {
+        case 2:
+          data = { ...data, ...vue2VmHandler(vm) };
+          break;
+        case 3:
+          data = { ...data, ...vue3VmHandler(vm) };
+          break;
+        default:
+          return;
+          break;
+      }
     }
+    breadcrumb.push({
+      type: BreadCrumbTypes.VUE,
+      category: breadcrumb.getCategory(BreadCrumbTypes.VUE),
+      data,
+      level: breadcrumbLevel,
+    });
+    transportData.send(data);
   }
-  breadcrumb.push({
-    type: BreadCrumbTypes.VUE,
-    category: breadcrumb.getCategory(BreadCrumbTypes.VUE),
-    data,
-    level: breadcrumbLevel,
-  });
-  transportData.send(data);
 }
 function vue2VmHandler(vm: ViewModel) {
   let componentName = '';

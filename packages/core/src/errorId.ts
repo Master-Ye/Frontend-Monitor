@@ -21,7 +21,7 @@ export function createErrorId(data: ReportDataType, apikey: string): number | nu
     case ErrorTypes.JAVASCRIPT_ERROR:
     case ErrorTypes.VUE_ERROR:
     case ErrorTypes.REACT_ERROR:
-      id = data.type + data.name + data.message + apikey;
+      id = data.type + data.name + data.message + apikey + data?.fileName + data.column;
       break;
     case ErrorTypes.LOG_ERROR:
       id = data.customTag + data.type + data.name + apikey;
@@ -126,4 +126,8 @@ export function hashCode(str: string): number {
     hash = hash & hash;
   }
   return hash;
+}
+
+export function getErrorUid(hash: string): string {
+  return window.btoa(encodeURIComponent(hash));
 }
