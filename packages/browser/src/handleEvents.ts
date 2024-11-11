@@ -5,6 +5,7 @@ import {
   resourceTransform,
   httpTransform,
   options,
+  openWhiteScreen,
 } from 'frontend-monitor-core';
 import {
   getLocationHref,
@@ -190,6 +191,16 @@ const HandleEvents = {
     });
     transportData.send(data);
   },
-};
+  handleWhiteScreen(): void {
+    openWhiteScreen((res: any) => {
+      // 上报白屏检测信息
+      transportData.send({
+        type: 'WHITESCREEN',
+        time: getTimestamp(),
+        ...res,
+      });
+    }, options);
+  }
+}
 
 export { HandleEvents };

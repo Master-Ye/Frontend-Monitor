@@ -125,6 +125,7 @@ export enum EventTypes {
   MINI_MEMORY_WARNING = 'miniMemoryWarning',
   MINI_NETWORK_STATUS_CHANGE = 'miniNetworkStatusChange',
   MINI_BATTERY_INFO = 'miniBatteryInfo',
+  WHITESCREEN = 'whitescreen'
 }
 
 export enum HttpTypes {

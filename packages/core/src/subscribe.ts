@@ -17,7 +17,7 @@ export function subscribeEvent(handler: ReplaceHandler): boolean {
   return true;
 }
 
-export function triggerHandlers(type: EventTypes | WxEvents, data: any): void {
+export function triggerHandlers(type: EventTypes | WxEvents, data?: any): void {
   if (!type || !handlers[type]) return;
   handlers[type].forEach((callback) => {
     nativeTryCatch(

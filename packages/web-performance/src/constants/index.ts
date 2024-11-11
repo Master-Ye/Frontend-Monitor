@@ -14,4 +14,8 @@ export enum metricsName {
   DI = 'device-information',
   NI = 'network-information',
   PI = 'page-information',
+  SOURCE = 'source',
+  ME = 'memory',
+  FSP = 'fsp'
+
 }

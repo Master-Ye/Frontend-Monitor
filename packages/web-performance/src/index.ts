@@ -22,6 +22,11 @@ import { initLCP } from './metrics/getLCP';
 import { initFPS } from './metrics/getFPS';
 import { initCLS } from './metrics/getCLS';
 import { initCCP } from './metrics/getCCP';
+import { _global, getTimestamp, on } from 'frontend-monitor-utils';
+import { transportData } from 'frontend-monitor-core';
+import { getResource } from './metrics/getSource';
+import { getFSP } from './metrics/getRenderTime';
+import { metricsName } from './constants';
 
 let metricsStore: MetricsStore;
 let reporter: ReturnType<typeof createReporter>;
@@ -50,31 +55,30 @@ class WebVitals implements IWebVitals {
     window.__monitor_sessionId__ = sessionId;
     reporter = createReporter(sessionId, appId, version, reportCallback);
     metricsStore = new MetricsStore();
-    // on(_global, 'load', function () {
-    //   // 上报资源列表
-    //   transportData.send({
-    //     type: EVENTTYPES.PERFORMANCE,
-    //     name: 'resourceList',
-    //     time: getTimestamp(),
-    //     status: STATUS_CODE.OK,
-    //     resourceList: getResource(),
-    //   });
+    on(_global, 'load', function () {
+      // 上报资源列表
+      transportData.send({
+        type: 'performance-resource',
+        name: 'resourceList',
+        time: getTimestamp(),
+        resourceList: getResource(),
+      });
 
-    //   // 上报内存情况, safari、firefox不支持该属性
-    //   if (performance.memory) {
-    //     transportData.send({
-    //       type: EVENTTYPES.PERFORMANCE,
-    //       name: 'memory',
-    //       time: getTimestamp(),
-    //       status: STATUS_CODE.OK,
-    //       memory: {
-    //         jsHeapSizeLimit: performance.memory && performance.memory.jsHeapSizeLimit,
-    //         totalJSHeapSize: performance.memory && performance.memory.totalJSHeapSize,
-    //         usedJSHeapSize: performance.memory && performance.memory.usedJSHeapSize,
-    //       },
-    //     });
-    //   }
-    // });
+      // 上报内存情况, safari、firefox不支持该属性
+      if (performance.memory) {
+        transportData.send({
+          type: EVENTTYPES.PERFORMANCE,
+          name: 'memory',
+          time: getTimestamp(),
+          memory: {
+            jsHeapSizeLimit: performance.memory && performance.memory.jsHeapSizeLimit,
+            totalJSHeapSize: performance.memory && performance.memory.totalJSHeapSize,
+            usedJSHeapSize: performance.memory && performance.memory.usedJSHeapSize,
+          },
+        });
+      }
+    });
+    // initResrouce(metricsStore, reporter, immediately)
     initPageInfo(metricsStore, reporter, immediately);
     initNetworkInfo(metricsStore, reporter, immediately);
     initDeviceInfo(metricsStore, reporter, immediately);
@@ -116,6 +120,9 @@ class WebVitals implements IWebVitals {
         }
       });
     });
+    getFSP((value) => {
+      metricsStore.set(metricsName.FSP, value);
+    })
   }
 
   getCurrentMetrics(): IMetricsObj {

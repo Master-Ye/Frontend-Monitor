@@ -26,6 +26,9 @@ function isFilterHttpUrl(url: string) {
 
 function replace(type: EventTypes) {
   switch (type) {
+    case EventTypes.WHITESCREEN:
+      whiteScreen();
+      break;
     case EventTypes.XHR:
       xhrReplace();
       break;
@@ -257,6 +260,10 @@ function historyReplace(): void {
   }
   replaceOld(_global.history, 'pushState', historyReplaceFn);
   replaceOld(_global.history, 'replaceState', historyReplaceFn);
+}
+
+function whiteScreen(): void {
+  triggerHandlers(EventTypes.WHITESCREEN);
 }
 
 function unhandledrejectionReplace(): void {

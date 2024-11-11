@@ -11,6 +11,12 @@ export function setupReplace(): void {
     type: EventTypes.XHR,
   });
   addReplaceHandler({
+    callback: () => {
+      HandleEvents.handleWhiteScreen();
+    },
+    type: EventTypes.WHITESCREEN,
+  });
+  addReplaceHandler({
     callback: (data) => {
       HandleEvents.handleHttp(data, BreadCrumbTypes.FETCH);
     },

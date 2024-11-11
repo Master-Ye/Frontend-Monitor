@@ -1,4 +1,30 @@
-function getResource() {
+import { metricsName } from "../constants";
+import metricsStore from "../lib/store";
+import { IMetrics, IReportHandler } from "../types";
+
+// /**
+//  * @param {metricsStore} store
+//  * @param {Function} report
+//  * @param {boolean} immediately, if immediately is true,data will report immediately
+//  * */
+// export const initResource = (
+//   store: metricsStore,
+//   report: IReportHandler,
+//   immediately = true,
+// ): void => {
+//   const source = getResource()
+//   const metrics = { name: metricsName.SOURCE, value: source } as IMetrics;
+
+//   store.set(metricsName.SOURCE, metrics);
+
+//   if (immediately) {
+//     report(metrics);
+//   }
+// };
+
+
+
+export const getResource = () => {
   if (performance.getEntriesByType) {
     const entries = performance.getEntriesByType('resource');
     // 过滤掉非静态资源的 fetch、 xmlhttprequest、beacon
