@@ -37,7 +37,7 @@ export class TransportData {
     this.queue = new Queue();
   }
 
-  imgRequest(data: any, url: string): void {
+  imgRequest(data: any, url: string): void { //URL地址的长度有一定限制
     const requestFun = () => {
       let img = new Image();
       const spliceStr = url.indexOf('?') === -1 ? '?' : '&';
@@ -46,6 +46,15 @@ export class TransportData {
     };
     this.queue.addFn(requestFun);
   }
+
+  // beacon 形式上报
+  beaconTransport = (data, url) => {
+    const status = window.navigator.sendBeacon(url, JSON.stringify(data));
+    // 如果数据量过大，则本次大数据量用 XMLHttpRequest 上报
+    if (!status) this.xhrPost(data, url)
+  };
+
+
 
   getRecord(): any[] {
     const recordData = _support.record;
@@ -217,7 +226,7 @@ export class TransportData {
     }
 
     if (isBrowserEnv) {
-      return this.useImgUpload ? this.imgRequest(result, dsn) : this.xhrPost(result, dsn);
+      return this.useImgUpload ? this.imgRequest(result, dsn) : this.beaconTransport(result, dsn);
     }
     if (isWxMiniEnv) {
       return this.wxPost(result, dsn);

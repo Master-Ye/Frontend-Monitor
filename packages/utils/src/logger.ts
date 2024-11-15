@@ -30,6 +30,10 @@ export class Logger {
     return this.enabled
   }
 
+  upload(error, reportFn) {
+    reportFn(error)
+  }
+
   log(...args: any[]): void {
     if (!this.enabled) {
       return

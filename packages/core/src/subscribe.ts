@@ -31,6 +31,7 @@ export function triggerHandlers(type: EventTypes | WxEvents, data?: any): void {
           )}\nError: ${e}`,
         );
       },
+      logger.upload(e, fetch)// todo try catch插件化上报
     );
   });
 }

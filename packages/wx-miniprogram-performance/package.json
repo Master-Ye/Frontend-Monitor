@@ -22,7 +22,7 @@
   "author": "chenghuai",
   "license": "ISC",
   "devDependencies": {
-    "frontend-bundle": "^1.4.1"
+
   },
   "dependencies": {
     "frontend-monitor-utils": "workspace:^",

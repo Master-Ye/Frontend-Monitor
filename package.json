@@ -6,12 +6,14 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install ",
     "init": "pnpm install",
+    "changeset": "changeset",
     "demo": "cross-env NODE_ENV=demo ts-node ./examples/server/index.ts",
     "clean": "pnpm -r --filter=./packages/* run clean",
     "build": "pnpm run init && pnpm -r --filter=./packages/* run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
     "pub": "pnpm run build && pnpm -r --filter=./packages/* publish",
     "pub:beta": "pnpm run build && pnpm -r --filter=./packages/* publish --tag beta",
+     "publish": "changeset publish --registry=https://registry.npmjs.com/"
   },
   "keywords": [
     "frontend",
@@ -21,12 +23,10 @@
   "license": "ISC",
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
-    "@swc/core": "^1.3.96",
     "@types/express": "^4.17.9",
     "@types/node": "^20.9.0",
     "@types/wechat-miniprogram": "^3.4.6",
     "cross-env": "^7.0.2",
-    // "frontend-bundle": "^1.4.1",
     "express": "^4.17.1",
     "husky": "^6.0.0",
     "msw": "^0.24.3",
