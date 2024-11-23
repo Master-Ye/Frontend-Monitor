@@ -33,8 +33,10 @@ export class TransportData {
   trackKey = '';
   errorDsn = '';
   trackDsn = '';
+  errorSet
   constructor() {
     this.queue = new Queue();
+    this.errorSet = new Set()
   }
 
   imgRequest(data: any, url: string): void { //URL地址的长度有一定限制
@@ -71,6 +73,9 @@ export class TransportData {
   async beforePost(data: FinalReportType) {
     if (isReportDataType(data)) {
       const errorId = createErrorId(data, this.apikey);
+      if (this.errorSet.has(errorId))
+        return
+      else this.errorSet.add(errorId)
       if (!errorId) return false;
       data.errorId = errorId;
     }

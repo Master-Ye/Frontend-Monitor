@@ -111,6 +111,10 @@ class WebVitals implements IWebVitals {
       initFPS(metricsStore, reporter, logFpsCount, immediately);
     });
 
+    getFSP((value) => {
+      metricsStore.set(metricsName.FSP, value);
+    })
+
     // if immediately is false,report metrics when visibility and unload
     [beforeUnload, unload, onHidden].forEach((fn) => {
       fn(() => {
@@ -120,9 +124,7 @@ class WebVitals implements IWebVitals {
         }
       });
     });
-    getFSP((value) => {
-      metricsStore.set(metricsName.FSP, value);
-    })
+
   }
 
   getCurrentMetrics(): IMetricsObj {
