@@ -1,7 +1,7 @@
 import { record } from 'rrweb';
 import pako from 'pako';
 import { Base64 } from 'js-base64';
-import { _support, generateUUID } from 'frontend-monitor-utils';
+import { _support, generateUUID, getSessionOrCreate } from 'frontend-monitor-utils';
 
 
 export function handleScreen(transportData: any, recordScreentime: number): void {
@@ -15,7 +15,7 @@ export function handleScreen(transportData: any, recordScreentime: number): void
         // 此段时间内发生错误，上报录屏信息
         if (_support.hasError) {
           const recordScreenId = _support.recordScreenId;
-          _support.recordScreenId = generateUUID();
+          _support.recordScreenId = getSessionOrCreate('trackUUID', generateUUID())
           transportData.send({
             type: EVENTTYPES.RECORDSCREEN,
             recordScreenId,
@@ -28,7 +28,7 @@ export function handleScreen(transportData: any, recordScreentime: number): void
         } else {
           // 不上报，清空录屏
           events = [];
-          _support.recordScreenId = generateUUID();
+          _support.recordScreenId = getSessionOrCreate('trackUUID', generateUUID())
         }
       }
       events.push(event);

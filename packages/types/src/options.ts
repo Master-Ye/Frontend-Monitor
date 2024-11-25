@@ -23,10 +23,10 @@ export interface IBeforeAppAjaxSendConfig {
 }
 export interface InitOptions
   extends SilentEventTypes,
-    HooksTypes,
-    WxSilentEventTypes,
-    WxMiniHooksTypes,
-    BrowserHooksTypes {
+  HooksTypes,
+  WxSilentEventTypes,
+  WxMiniHooksTypes,
+  BrowserHooksTypes {
   /**
    * 错误监控的dsn服务器地址
    */
@@ -40,9 +40,9 @@ export interface InitOptions
    */
   apikey?: string;
   /**
-   * 使用img上报的方式，默认为false，默认是xhr的上报方式
+   * 使用SendBeacon上报的方式，默认为false，默认是xhr的上报方式
    */
-  useImgUpload?: boolean;
+  useSendBeaconUpload?: boolean;
   /**
    * 每个项目有一个唯一trackKey，给埋点的dsn用的
    */
@@ -52,7 +52,7 @@ export interface InitOptions
    */
   debug?: boolean;
   /**
-   * 默认是关闭traceId，开启时，页面的所有请求都会生成一个uuid，放入请求头中
+   * 默认是关闭traceId，开启时，页面的所有请求都会生成一个会话级uuid，放入请求头中
    */
   enableTraceId?: boolean;
   /**

@@ -6,11 +6,12 @@ import {
   _support,
   setSilentFlag,
   logger,
+  getSessionOrCreate,
 } from 'frontend-monitor-utils';
 import { breadcrumb } from './breadcrumb';
 import { transportData } from './transportData';
 export class Options {
-  beforeAppAjaxSend: Function = () => {};
+  beforeAppAjaxSend: Function = () => { };
   enableTraceId: Boolean;
   filterXhrUrlRegExp: RegExp;
   includeHttpUrlTraceIdRegExp: RegExp;
@@ -18,19 +19,19 @@ export class Options {
   throttleDelayTime = 0;
   maxDuplicateCount = 2;
   // wx-mini
-  appOnLaunch: Function = () => {};
-  appOnShow: Function = () => {};
-  onPageNotFound: Function = () => {};
-  appOnHide: Function = () => {};
-  pageOnUnload: Function = () => {};
-  pageOnShow: Function = () => {};
-  pageOnHide: Function = () => {};
-  onShareAppMessage: Function = () => {};
-  onShareTimeline: Function = () => {};
-  onTabItemTap: Function = () => {};
+  appOnLaunch: Function = () => { };
+  appOnShow: Function = () => { };
+  onPageNotFound: Function = () => { };
+  appOnHide: Function = () => { };
+  pageOnUnload: Function = () => { };
+  pageOnShow: Function = () => { };
+  pageOnHide: Function = () => { };
+  onShareAppMessage: Function = () => { };
+  onShareTimeline: Function = () => { };
+  onTabItemTap: Function = () => { };
   // need return opitons，so defaul value is undefined
   wxNavigateToMiniProgram: Function;
-  triggerWxEvent: Function = () => {};
+  triggerWxEvent: Function = () => { };
   onRouteChange?: Function;
 
   constructor() {
@@ -109,7 +110,7 @@ export function setTraceId(
 ) {
   const { includeHttpUrlTraceIdRegExp, enableTraceId } = options;
   if (enableTraceId && includeHttpUrlTraceIdRegExp && includeHttpUrlTraceIdRegExp.test(httpUrl)) {
-    const traceId = generateUUID();
+    const traceId = getSessionOrCreate('trackUUID', generateUUID())
     callback(options.traceIdFieldName, traceId);
   }
 }

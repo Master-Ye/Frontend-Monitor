@@ -28,7 +28,7 @@ export class TransportData {
   configReportXhr: unknown = null;
   configReportUrl: unknown = null;
   configReportWxRequest: unknown = null;
-  useImgUpload = false;
+  useSendBeaconUpload = false;
   apikey = '';
   trackKey = '';
   errorDsn = '';
@@ -183,14 +183,14 @@ export class TransportData {
       trackDsn,
       trackKey,
       configReportUrl,
-      useImgUpload,
+      useSendBeaconUpload,
       configReportWxRequest,
     } = options;
     validateOption(apikey, 'apikey', 'string') && (this.apikey = apikey);
     validateOption(trackKey, 'trackKey', 'string') && (this.trackKey = trackKey);
     validateOption(dsn, 'dsn', 'string') && (this.errorDsn = dsn);
     validateOption(trackDsn, 'trackDsn', 'string') && (this.trackDsn = trackDsn);
-    validateOption(useImgUpload, 'useImgUpload', 'boolean') && (this.useImgUpload = useImgUpload);
+    validateOption(useSendBeaconUpload, 'useSendBeaconUpload', 'boolean') && (this.useSendBeaconUpload = useSendBeaconUpload);
     validateOption(beforeDataReport, 'beforeDataReport', 'function') &&
       (this.beforeDataReport = beforeDataReport);
     validateOption(configReportXhr, 'configReportXhr', 'function') &&
@@ -231,7 +231,7 @@ export class TransportData {
     }
 
     if (isBrowserEnv) {
-      return this.useImgUpload ? this.imgRequest(result, dsn) : this.beaconTransport(result, dsn);
+      return this.useSendBeaconUpload ? this.beaconTransport(result, dsn) : this.imgRequest(result, dsn);
     }
     if (isWxMiniEnv) {
       return this.wxPost(result, dsn);

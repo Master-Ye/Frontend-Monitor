@@ -97,10 +97,69 @@ pnpm+monorepo
 
 ![image](imgs/image.png)
 
+## 使用方法:
 
+错误监控：
+
+```javascript
+window.frontendMonitor.init({
+  silentConsole: true,
+  maxBreadcrumbs: 10,
+  dsn: 'http://localhost:2021/errors/upload',
+  throttleDelayTime: 0,
+  onRouteChange(from, to) {
+    console.log('onRouteChange: _', from, to);
+  },
+});
+//其他重要options
+//trackerId表示用户唯一键（可以理解成userId），需要trackerId的意义可以区分每个错误影响的用户数量
+//backTrackerId?(): string | number;
+```
+
+性能指标收集:
+
+```typescript
+  window.wv = new frontendMonitor.WebVitals({
+        appId: 'frontend-monitor',
+        version: '1.0.0',
+        reportCallback: (metrics) => {
+          if (window.wv) {
+            const infos = window.wv.getCurrentMetrics();
+
+            const pageInfo = infos['page-information'];
+            const networkInfo = infos['network-information'];
+            const deviceInfo = infos['device-information'];
+
+            function mergeData(data) {
+              const {
+                data: { name, ...metrics },
+                ...rest
+              } = data;
+              if (name !== 'resource-flow' && name.indexOf('info') < 0) {
+                return {
+                  name,
+                  ...metrics,
+                  ...rest,
+                  ...pageInfo.value,
+                  ...networkInfo.value,
+                  ...deviceInfo.value,
+                };
+              }
+              return data;
+            }
+            console.log(mergeData(metrics));
+          }
+        },
+        immediately: true,
+        needCCP: true,
+        logFpsCount: 10,
+      });
+
+```
 
 TODO:
+
 1. `Node`层作为数据清洗层，进行的常见的数据清洗规则及使用 使用`Node+mysql+redis`进行持久化的数据存储，及稳定性指标的展示+告警系统
-2. JSON`录屏`监控报警+`sourcemap`定位源码+采样判断白屏
-3. 多端适配(RN 小程序 web)
+<!-- 2. JSON`录屏`监控报警+`sourcemap`定位源码+采样判断白屏
+3. 多端适配(RN 小程序 web) -->
 
