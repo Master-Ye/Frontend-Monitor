@@ -1,6 +1,6 @@
 {
-  "name": "frontend-monitor",
-  "version": "true",
+  "name": "@masterye/frontend-monitor",
+  "version": "1.0.0",
   "description": "前端监控",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -13,13 +13,13 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
     "pub": "pnpm run build && pnpm -r --filter=./packages/* publish",
     "pub:beta": "pnpm run build && pnpm -r --filter=./packages/* publish --tag beta",
-     "publish": "changeset publish --registry=https://registry.npmjs.com/"
+    "publish": "changeset publish --registry=https://registry.npmjs.com/"
   },
   "keywords": [
     "frontend",
     "monitor"
   ],
-  "author": "chenghuai",
+  "author": "masterye",
   "license": "ISC",
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
@@ -38,7 +38,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "rimraf": "^5.0.5",
-    "error-stack-parser": "^2.1.4"
+    "error-stack-parser": "^2.1.4",
+    "rimraf": "^5.0.5"
   }
 }
