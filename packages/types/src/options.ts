@@ -82,6 +82,11 @@ export interface InitOptions
   throttleDelayTime?: number;
   /**
    * 在引入wx-mini的情况下，使用该参数用来开启
+   * 开启浏览器指纹用于不登陆状态下的uv统计
+   */
+  canvasFinger?: boolean;
+  /**
+   * 在引入wx-mini的情况下，使用该参数用来开启
    */
   enableTrack?: boolean;
   /**

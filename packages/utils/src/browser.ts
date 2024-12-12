@@ -88,7 +88,7 @@ export function extractErrorStack(ex: any, level: Severity): ReportDataType {
   }
 
   const chrome =
-      /^\s*at (.*?) ?\(((?:file|https?|blob|chrome-extension|native|eval|webpack|<anonymous>|[a-z]:|\/).*?)(?::(\d+))?(?::(\d+))?\)?\s*$/i,
+    /^\s*at (.*?) ?\(((?:file|https?|blob|chrome-extension|native|eval|webpack|<anonymous>|[a-z]:|\/).*?)(?::(\d+))?(?::(\d+))?\)?\s*$/i,
     gecko =
       /^\s*(.*?)(?:\((.*?)\))?(?:^|@)((?:file|https?|blob|chrome|webpack|resource|\[native).*?|[^@]*bundle)(?::(\d+))?(?::(\d+))?\s*$/i,
     winjs =
@@ -165,4 +165,16 @@ export function extractErrorStack(ex: any, level: Severity): ReportDataType {
     ...normal,
     stack: stack,
   };
+}
+
+export const fingerprint = () => {
+  const dataUrl = localStorage.getItem('canvasprint')
+  if (dataUrl) return dataUrl
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const contentTxt = 'canvasFingerprint';
+  ctx.fillText(contentTxt, 50, 50)
+  const data = canvas.toDataURL()
+  localStorage.setItem('canvasprint', data)
+  return data
 }

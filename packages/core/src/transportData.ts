@@ -1,3 +1,4 @@
+import { fingerprint } from './../../utils/src/browser';
 import {
   _support,
   validateOption,
@@ -28,6 +29,7 @@ export class TransportData {
   configReportXhr: unknown = null;
   configReportUrl: unknown = null;
   configReportWxRequest: unknown = null;
+  canvasFinger:boolean = false
   useSendBeaconUpload = false;
   apikey = '';
   trackKey = '';
@@ -127,6 +129,7 @@ export class TransportData {
     };
     this.apikey && (result.apikey = this.apikey);
     this.trackKey && (result.trackKey = this.trackKey);
+    this.canvasFinger && (result.fingerPrint = fingerprint());
     return result;
   }
 
@@ -185,7 +188,9 @@ export class TransportData {
       configReportUrl,
       useSendBeaconUpload,
       configReportWxRequest,
+      canvasFinger
     } = options;
+    validateOption(canvasFinger, 'canvasFinger', 'boolean') && (this.canvasFinger = canvasFinger);
     validateOption(apikey, 'apikey', 'string') && (this.apikey = apikey);
     validateOption(trackKey, 'trackKey', 'string') && (this.trackKey = trackKey);
     validateOption(dsn, 'dsn', 'string') && (this.errorDsn = dsn);

@@ -7,6 +7,7 @@ export interface AuthInfo {
   sdkVersion: string;
   sdkName: string;
   trackerId: string;
+  fingerPrint?: string
 }
 
 export interface TransportDataType {
