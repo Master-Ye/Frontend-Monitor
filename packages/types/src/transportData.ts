@@ -26,13 +26,14 @@ interface ICommonDataType {
 export interface ReportDataType extends ICommonDataType {
   type?: string;
   message?: string;
-  url: string;
+  data?: any;
+  url?: string;
   name?: string;
   stack?: any;
   time?: number;
   errorId?: number;
-  level: string;
-  fileName?:string;
+  level?: string;
+  fileName?: string;
   line?: number;
   column?: number;
   // ajax

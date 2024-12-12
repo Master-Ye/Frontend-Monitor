@@ -7,12 +7,14 @@ import {
   _support,
 } from 'frontend-monitor-utils';
 import { BreadcrumbPushData, InitOptions } from 'frontend-monitor-types';
+import { transportData } from './transportData';
 
 export class Breadcrumb {
   maxBreadcrumbs = 10;
   beforePushBreadcrumb: unknown = null;
+  errStack: BreadcrumbPushData[] = [];
   stack: BreadcrumbPushData[] = [];
-  constructor() {}
+  constructor() { }
 
   push(data: BreadcrumbPushData): void {
     if (typeof this.beforePushBreadcrumb === 'function') {
@@ -29,21 +31,31 @@ export class Breadcrumb {
   }
   immediatePush(data: BreadcrumbPushData): void {
     data.time || (data.time = getTimestamp());
-    if (this.stack.length >= this.maxBreadcrumbs) {
+    if (this.errStack.length >= this.maxBreadcrumbs) {
       this.shift();
     }
+    if (this.stack.length >= this.maxBreadcrumbs) {
+      transportData.send({
+        data: this.stack,
+        type: 'Stack'
+      }
+      )
+      this.clear()
+    }
+    this.errStack.push(data)
     this.stack.push(data);
     this.stack.sort((a, b) => a.time - b.time);
+    this.errStack.sort((a, b) => a.time - b.time);
     logger.log(this.stack);
   }
   shift(): boolean {
-    return this.stack.shift() !== undefined;
+    return this.errStack.shift() !== undefined;
   }
   clear(): void {
     this.stack = [];
   }
   getStack(): BreadcrumbPushData[] {
-    return this.stack;
+    return this.errStack;
   }
   getCategory(type: BreadCrumbTypes) {
     switch (type) {
