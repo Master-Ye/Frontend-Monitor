@@ -27,9 +27,9 @@ import {
 } from 'frontend-monitor-utils';
 import { HandleWxAppEvents, HandleWxPageEvents } from './handleWxEvents';
 import { MonitorHttp, EMethods } from 'frontend-monitor-types';
-import { getNavigateBackTargetUrl } from './utils';
-import { EListenerTypes } from './constant';
-import { MiniRoute } from './types';
+import { getNavigateBackTargetUrl } from '../core/utils';
+import { EListenerTypes } from '../core/constant';
+import { MiniRoute } from '../types';
 
 function isFilterHttpUrl(url: string) {
   return sdkOptions.filterXhrUrlRegExp && sdkOptions.filterXhrUrlRegExp.test(url);
@@ -109,9 +109,9 @@ const pageLifeMethods = [
 function replacePageLifeMethods(
   options:
     | WechatMiniprogram.Page.Options<
-        WechatMiniprogram.Page.DataOption,
-        WechatMiniprogram.Page.CustomOption
-      >
+      WechatMiniprogram.Page.DataOption,
+      WechatMiniprogram.Page.CustomOption
+    >
     | WechatMiniprogram.Component.MethodOption,
 ) {
   pageLifeMethods.forEach((method) => {
@@ -199,9 +199,9 @@ export function replaceBehavior() {
 function replaceAction(
   options:
     | WechatMiniprogram.Page.Options<
-        WechatMiniprogram.Page.DataOption,
-        WechatMiniprogram.Page.CustomOption
-      >
+      WechatMiniprogram.Page.DataOption,
+      WechatMiniprogram.Page.CustomOption
+    >
     | WechatMiniprogram.Component.MethodOption,
 ) {
   function gestureTrigger(e) {
@@ -323,36 +323,36 @@ export function replaceNetwork() {
           | WechatMiniprogram.RequestSuccessCallback
           | WechatMiniprogram.DownloadFileSuccessCallback
           | WechatMiniprogram.UploadFileFailCallback = function (res) {
-          const endTime = getTimestamp();
-          data.responseText =
-            (variableTypeDetection.isString(res.data) ||
-              variableTypeDetection.isObject(res.data)) &&
-            res.data;
-          data.elapsedTime = endTime - data.sTime;
-          data.status = res.statusCode;
-          data.errMsg = res.errMsg;
-          data.time = endTime;
+            const endTime = getTimestamp();
+            data.responseText =
+              (variableTypeDetection.isString(res.data) ||
+                variableTypeDetection.isObject(res.data)) &&
+              res.data;
+            data.elapsedTime = endTime - data.sTime;
+            data.status = res.statusCode;
+            data.errMsg = res.errMsg;
+            data.time = endTime;
 
-          triggerHandlers(EventTypes.XHR, data);
-          if (typeof options.success === 'function') {
-            return options.success(res);
-          }
-        };
+            triggerHandlers(EventTypes.XHR, data);
+            if (typeof options.success === 'function') {
+              return options.success(res);
+            }
+          };
         const _fail = options.fail;
         const failHandler:
           | WechatMiniprogram.RequestFailCallback
           | WechatMiniprogram.DownloadFileFailCallback
           | WechatMiniprogram.UploadFileFailCallback = function (err) {
-          // 系统和网络层面的失败
-          const endTime = getTimestamp();
-          data.elapsedTime = endTime - data.sTime;
-          data.errMsg = err.errMsg;
-          data.status = 0;
-          triggerHandlers(EventTypes.XHR, data);
-          if (variableTypeDetection.isFunction(_fail)) {
-            return _fail(err);
-          }
-        };
+            // 系统和网络层面的失败
+            const endTime = getTimestamp();
+            data.elapsedTime = endTime - data.sTime;
+            data.errMsg = err.errMsg;
+            data.status = 0;
+            triggerHandlers(EventTypes.XHR, data);
+            if (variableTypeDetection.isFunction(_fail)) {
+              return _fail(err);
+            }
+          };
         const actOptions = {
           ...options,
           success: successHandler,
@@ -415,16 +415,16 @@ export function replaceRoute() {
             | WechatMiniprogram.RedirectToFailCallback
             | WechatMiniprogram.NavigateToFailCallback
             | WechatMiniprogram.NavigateBackFailCallback = function (res) {
-            const failData: MiniRoute = {
-              ...data,
-              isFail: true,
-              message: res.errMsg,
+              const failData: MiniRoute = {
+                ...data,
+                isFail: true,
+                message: res.errMsg,
+              };
+              triggerHandlers(EventTypes.MINI_ROUTE, failData);
+              if (variableTypeDetection.isFunction(_fail)) {
+                return _fail(res);
+              }
             };
-            triggerHandlers(EventTypes.MINI_ROUTE, failData);
-            if (variableTypeDetection.isFunction(_fail)) {
-              return _fail(res);
-            }
-          };
           options.fail = failHandler;
         }
         if (

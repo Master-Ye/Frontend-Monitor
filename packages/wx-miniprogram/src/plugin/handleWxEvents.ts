@@ -18,14 +18,14 @@ import {
   _support,
   Severity,
 } from 'frontend-monitor-utils';
-import { getWxMiniDeviceInfo, targetAsString } from './utils';
+import { getWxMiniDeviceInfo, targetAsString } from '../core/utils';
 import {
   MiniRoute,
   WxLifeCycleBreadcrumb,
   WxOnShareAppMessageBreadcrumb,
   WxOnTabItemTapBreadcrumb,
-} from './types';
-import { EListenerTypes } from './constant';
+} from '../types';
+import { EListenerTypes } from '../core/constant';
 
 const HandleWxAppEvents = {
   onLaunch(options: WechatMiniprogram.App.LaunchShowOption) {
