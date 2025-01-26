@@ -79,10 +79,10 @@ class WebVitals implements IWebVitals {
         initFCP(metricsStore, reporter, immediately, scoreConfig);
       },
       { once: true, capture: true },
-    );
+    );//意义不大
 
     afterLoad(() => {
-      initNavigationTiming(metricsStore, reporter, immediately);
+      initNavigationTiming(metricsStore, reporter, immediately);//关键时间点和时间段
       initFID(metricsStore, reporter, immediately, scoreConfig);
       initFPS(metricsStore, reporter, logFpsCount, immediately);
     });
